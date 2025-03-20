@@ -4,7 +4,6 @@ from backend.models import User
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-
     """ Сериализатор регистрации пользователя и создания нового. """
 
     token = serializers.CharField(max_length=255, read_only=True)
@@ -66,3 +65,33 @@ class LoginSerializer(serializers.Serializer):
             'email': user.email,
             'token': user.token
         }
+    
+
+class UserSerializer(serializers.ModelSerializer):
+    """ Сериализатор обновления пользователя """
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'token',)
+        read_only_fields = ('token',)
+
+    def update(self, instance, validated_data):
+        """ Выполняет обновление пользователя. """
+
+        # удаляем поле password для использования специальной функци Django
+        # (set_password)
+        password = validated_data.pop('password', None)
+
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+
+        return instance

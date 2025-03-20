@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'backend.backends.JWTAuthentication',
     ],
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
@@ -146,4 +146,7 @@ REST_FRAMEWORK = {
     },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 4,
+
+    'EXCEPTION_HANDLER': 'backend.exceptions.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
 }
