@@ -127,8 +127,16 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'backend.User'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# # EMAIL_USE_TLS = True
+
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_PORT = '465'
+# EMAIL_HOST_USER = 'dima02081991@mail.ru'
+# EMAIL_HOST_PASSWORD = '9cbYJhzXn1E3sjygKK1d'
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# SERVER_EMAIL = EMAIL_HOST_USER
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

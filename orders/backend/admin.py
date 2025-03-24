@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
-from .models import Shop, User
+from .models import Shop, User, Category
 from django.forms import BaseInlineFormSet
 
 def summary(obj) -> str:
@@ -24,3 +23,10 @@ class ShopAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     """ Админка модели User """
     list_display = ['id', 'username', 'email']
+
+
+@admin.register(Category)
+class CategotyAdmin(admin.ModelAdmin):
+    """ Админка модели Категория """
+    list_display = ['id', 'name']
+    filter_horizontal = ['shops']

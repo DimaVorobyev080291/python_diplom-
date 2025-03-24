@@ -110,3 +110,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'Пользователь'
         verbose_name_plural = "Список пользователей"
         ordering = ('email',)
+
+class Category(models.Model):
+    """Класс модели категория товара """
+
+    name = models.CharField(max_length=100, verbose_name='Название')
+    shops = models.ManyToManyField(Shop, verbose_name='Магазины', related_name='categories', blank=True)
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = "Список категорий"
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
