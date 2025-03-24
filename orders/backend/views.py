@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from backend.renderers import UserJSONRenderer
 from backend.serializers import RegistrationSerializer, LoginSerializer, UserSerializer, ShopSerializer, \
-    CategorySerializer
-from backend.models import Shop, Category
+    CategorySerializer, ProductSerializer
+from backend.models import Shop, Category, Product
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class RegistrationAPIView(APIView):
@@ -74,3 +75,11 @@ class CategoryView(ListAPIView):
     """ Класс для просмотра модели Category """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class ProductView(ListAPIView):
+    """ Класс для просмотра модели product """
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['shop', 'сategory']

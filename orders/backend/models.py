@@ -10,11 +10,6 @@ class Shop(models.Model):
 
     title = models.CharField(max_length=100, verbose_name='Название')
     address = models.CharField(max_length=200, verbose_name='Адрес')
-    # products = models.ManyToManyField(
-    #     Product,
-    #     through='StockProduct',
-    #     related_name='stocks',
-    # )
 
     class Meta:
         verbose_name = 'Магазин'
@@ -112,7 +107,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ('email',)
 
 class Category(models.Model):
-    """Класс модели категория товара """
+    """Класс модели категория продукта """
 
     name = models.CharField(max_length=100, verbose_name='Название')
     shops = models.ManyToManyField(Shop, verbose_name='Магазины', related_name='categories', blank=True)
@@ -124,3 +119,39 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Product(models.Model):
+    """ Класс модели продукт """
+
+    name = models.CharField(max_length=100, verbose_name='Название')
+    сategory = models.ForeignKey(Category, verbose_name='Категория', related_name='products',
+                                  on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, verbose_name='Магазин', related_name='product_infos',
+                             on_delete=models.CASCADE)
+     
+    class Meta:
+        verbose_name = 'Продук'
+        verbose_name_plural = "Список продуктов"
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+     
+
+class Parameter(models.Model):
+    """ Класс модели параметры продукта (Product) """
+
+    product = models.ForeignKey(Product, verbose_name='Продукт', related_name='product_infos',
+                                on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(default=0, verbose_name='Цена')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
+
+    class Meta:
+        verbose_name = 'Параметры продукта'
+        verbose_name_plural = "Список праметров продукта"
+        ordering = ('price',)
+
+    def __str__(self):
+        return self.description
