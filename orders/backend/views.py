@@ -1,10 +1,12 @@
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from backend.renderers import UserJSONRenderer
-from backend.serializers import RegistrationSerializer, LoginSerializer, UserSerializer
+from backend.serializers import RegistrationSerializer, LoginSerializer, UserSerializer, ShopSerializer, \
+    CategorySerializer
+from backend.models import Shop, Category
 
 
 class RegistrationAPIView(APIView):
@@ -60,3 +62,15 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class ShopView(ListAPIView):
+    """ Класс для просмотра модели Shop """
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
+
+class CategoryView(ListAPIView):
+    """ Класс для просмотра модели Category """
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

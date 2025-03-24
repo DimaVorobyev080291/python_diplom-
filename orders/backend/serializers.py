@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from backend.models import User
+from backend.models import User, Shop, Category
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -95,3 +95,17 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    
+
+class ShopSerializer(serializers.ModelSerializer):
+    """ Сериализатор для представления ShopView """
+    class Meta:
+        model = Shop
+        fields = ('id', 'title', 'address', 'categories')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """ Сериализатор для представления CategoryView"""
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'shops')
