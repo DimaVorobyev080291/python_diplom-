@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shop, User, Category, Product, Parameter
+from .models import Shop, User, Category, Product, Parameter, Cart
 from django.forms import BaseInlineFormSet
 
 def summary(obj) -> str:
@@ -18,7 +18,8 @@ class ShopAdmin(admin.ModelAdmin):
     def address_summary(self, obj) -> str:
         address = summary(obj.address)
         return address 
-    
+
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """ Админка модели User """
@@ -31,6 +32,7 @@ class CategotyAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     filter_horizontal = ['shops']
 
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     """ Админка модели Продук """
@@ -41,3 +43,9 @@ class ProductAdmin(admin.ModelAdmin):
 class ParameterAdmin(admin.ModelAdmin):
     """ Админка модели Параметры """
     list_display = ['id', 'product', 'price', 'description', 'quantity']
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    """ Админка модели Корзина покупателя  """
+    list_display = ['id', 'user', 'product', 'quantity', 'created_timestamp']

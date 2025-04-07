@@ -155,3 +155,21 @@ class Parameter(models.Model):
 
     def __str__(self):
         return self.description
+    
+
+class Cart(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
+
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзины"
+        ordering = ("id",)
+
+    def __str__(self):
+        if self.user:
+            return f'Корзина {self.user.username} | Товар {self.product.name} | Количество {self.quantity}'
+            
