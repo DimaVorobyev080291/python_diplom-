@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from backend.models import User, Shop, Category, Product , Parameter
+from backend.models import User, Shop, Category, Product , Parameter, Cart
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -124,3 +124,10 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id', 'name', 'сategory', 'shop', 'parameters', 'product_infos')
+
+
+class CartSerializer(serializers.ModelSerializer):
+    """ Serializer для представления CartViewSet """
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'product', 'quantity']  

@@ -158,6 +158,7 @@ class Parameter(models.Model):
     
 
 class Cart(models.Model):
+    """ Класс модели корзина (Cart) """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')

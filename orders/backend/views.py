@@ -1,12 +1,14 @@
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from backend.permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
 from backend.renderers import UserJSONRenderer
 from backend.serializers import RegistrationSerializer, LoginSerializer, UserSerializer, ShopSerializer, \
-    CategorySerializer, ProductSerializer
-from backend.models import Shop, Category, Product
+    CategorySerializer, ProductSerializer, CartSerializer
+from backend.models import Shop, Category, Product, Cart
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -78,8 +80,29 @@ class CategoryView(ListAPIView):
 
 
 class ProductView(ListAPIView):
-    """ Класс для просмотра модели product """
+    """ Класс для просмотра модели product. С возможностью фильтрации. """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['shop', 'сategory']
+
+
+class CartViewSet(ModelViewSet):
+    """ViewSet с полныс CRUD функционалом для таблице Cart. С возможностью фильтрации. """
+
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user']
+
+    def get_permissions(self):
+        """
+        Получение прав для действий c моделью Cart авторизированый пользователь может создать, просмотреть
+        корзину. Для измения и удаления пользователь должен совпадать с тем же пользователем что и создал 
+        эту корзину
+        """
+        if self.action in ['create', 'list', 'retrieve']:
+            return [IsAuthenticated()]
+        elif self.action in ['destroy', 'update', 'partial_update']:
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]
+        return []
