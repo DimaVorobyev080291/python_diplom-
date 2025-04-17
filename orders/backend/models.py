@@ -173,4 +173,33 @@ class Cart(models.Model):
     def __str__(self):
         if self.user:
             return f'Корзина {self.user.username} | Товар {self.product.name} | Количество {self.quantity}'
-            
+        
+
+class Order(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Пользователь")
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
+    status = models.CharField(max_length=50, default='В обработке', verbose_name="Статус заказа")
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+        ordering = ("id",)
+
+    def __str__(self):
+        return f"Заказ № {self.pk} | Покупатель {self.user.username}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, verbose_name="Продукт", default=None)
+    quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата продажи")
+
+
+    class Meta:
+        verbose_name = "Позиция товара в заказе"
+        verbose_name_plural = "Позиции товаров"
+        ordering = ("id",)
+
+    def __str__(self):
+        return f"Товар {self.name} | Заказ № {self.order.pk}"         

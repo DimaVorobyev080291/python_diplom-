@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shop, User, Category, Product, Parameter, Cart
+from .models import Shop, User, Category, Product, Parameter, Cart, Order, OrderItem
 from django.forms import BaseInlineFormSet
 
 def summary(obj) -> str:
@@ -49,3 +49,15 @@ class ParameterAdmin(admin.ModelAdmin):
 class CartAdmin(admin.ModelAdmin):
     """ Админка модели Корзина покупателя  """
     list_display = ['id', 'user', 'product', 'quantity', 'created_timestamp']
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    """ Админка модели Заказ """
+    list_display = ['id', 'user', 'status', 'created_timestamp']
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    """ Админка модели позиции в заказе """
+    list_display = ['id', 'order', 'product', 'quantity', 'created_timestamp']
