@@ -1,4 +1,7 @@
 from rest_framework import status
+from django.forms import ValidationError
+from django.db import transaction
+from django.http import JsonResponse
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -7,8 +10,8 @@ from backend.permissions import IsOwnerOrReadOnly
 from rest_framework.response import Response
 from backend.renderers import UserJSONRenderer
 from backend.serializers import RegistrationSerializer, LoginSerializer, UserSerializer, ShopSerializer, \
-    CategorySerializer, ProductSerializer, CartSerializer
-from backend.models import Shop, Category, Product, Cart
+    CategorySerializer, ProductSerializer, CartSerializer, OrderSerializer
+from backend.models import Shop, Category, Product,Parameter ,Cart, Order, OrderItem
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -95,14 +98,96 @@ class CartViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user']
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+    def list(self, request, *args, **kwargs):
+        """Метод list переопределен, показывает только корзины(Cart) пользователя """
+
+        user=self.request.user
+        cart_items = Cart.objects.filter(user=user)
+        cart = CartSerializer(cart_items, many=True)
+        return Response(cart.data)
+
+
     def get_permissions(self):
         """
-        Получение прав для действий c моделью Cart авторизированый пользователь может создать, просмотреть
-        корзину. Для измения и удаления пользователь должен совпадать с тем же пользователем что и создал 
-        эту корзину
+        Получение прав для действий c моделью Cart авторизированый пользователь может создать корзину.
+        Для измения, удаления и просмотра карзины пользователь должен совподать с создателем корзины
         """
-        if self.action in ['create', 'list', 'retrieve']:
+        if self.action in ['create']:
             return [IsAuthenticated()]
-        elif self.action in ['destroy', 'update', 'partial_update']:
+        elif self.action in ['list', 'retrieve','destroy', 'update', 'partial_update']:
             return [IsAuthenticated(), IsOwnerOrReadOnly()]
-        return []
+    
+
+class OrdeViewSet(ModelViewSet):
+    """
+    ViewSet с полныс CRUD функционалом для таблице Order и переопределение метода create.
+    С возможностью фильтрации. 
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user']
+
+    
+    def create(self, request, *args, **kwargs):
+        """
+        Метод create переопределен происходит создание запис в таблице Order и одновременно запись 
+        в таблицу OrderItem. Происходит измения количества товара в таблице Parameter. 
+        """
+        try:
+            with transaction.atomic():
+                user = self.request.user
+                cart_items = Cart.objects.filter(user=user)
+                order = Order.objects.create(
+                    user=user
+                    )
+                for item in cart_items:
+                    product=item.product
+                    quantity=item.quantity
+            
+                    product_info = Parameter.objects.filter(product_id=product)
+                    for item in product_info:
+                        parameter_quantity = item.quantity
+                        if parameter_quantity < quantity:
+                            raise ValidationError(f'Недостаточное количество товара на складе.\
+                                                    В наличии - {parameter_quantity}')
+                        difference = parameter_quantity - quantity
+                        item.quantity = difference
+                        item.save(update_fields=["quantity"])
+
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        quantity=quantity,
+                        )
+            
+                cart_items.delete()
+                return JsonResponse({'Status': True, 'message': 'The order has been formed'})
+        except ValidationError as e:
+            print(e)
+            return JsonResponse({'Status': False, 'Errors': 'The order was not formed'})
+        
+
+    def list(self, request, *args, **kwargs):
+        """Метод list переопределен, показывает только заказы(Order) пользователя """
+
+        user=self.request.user
+        orde_items = Order.objects.filter(user=user)
+        orde = OrderSerializer(orde_items, many=True)
+        return Response(orde.data)
+    
+        
+    def get_permissions(self):
+        """
+        Получение прав для действий c моделью Order авторизированый пользователь может создать заказ.
+        Для измения, удаления и просмотра пользователь должен совпадать с тем же пользователем что и создал 
+        этот заказ
+        """
+        if self.action in ['create']:
+            return [IsAuthenticated()]
+        elif self.action in ['list', 'destroy', 'update', 'partial_update', 'retrieve']:
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]       

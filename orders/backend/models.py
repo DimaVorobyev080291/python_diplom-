@@ -160,7 +160,8 @@ class Parameter(models.Model):
 class Cart(models.Model):
     """ Класс модели корзина (Cart) """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь', 
+                            related_name='carts',)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
@@ -176,7 +177,10 @@ class Cart(models.Model):
         
 
 class Order(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Пользователь")
+    """ Класс модели Order """
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Пользователь",
+                            related_name='orders',)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
     status = models.CharField(max_length=50, default='В обработке', verbose_name="Статус заказа")
 
@@ -190,7 +194,9 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ")
+    """ Класс модели OrderItem """
+    
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ", related_name='order_items',)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, verbose_name="Продукт", default=None)
     quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата продажи")
@@ -202,4 +208,4 @@ class OrderItem(models.Model):
         ordering = ("id",)
 
     def __str__(self):
-        return f"Товар {self.name} | Заказ № {self.order.pk}"         
+        return f"Товар {self.product} | Заказ № {self.order.pk}"         

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from backend.models import User, Shop, Category, Product , Parameter, Cart
+from django.db import transaction
+from backend.models import User, Shop, Category, Product , Parameter, Cart, Order, OrderItem
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -69,6 +70,7 @@ class LoginSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     """ Сериализатор обновления пользователя """
+
     password = serializers.CharField(
         max_length=128,
         min_length=8,
@@ -82,7 +84,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """ Выполняет обновление пользователя. """
-
         # удаляем поле password для использования специальной функци Django
         # (set_password)
         password = validated_data.pop('password', None)
@@ -99,6 +100,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ShopSerializer(serializers.ModelSerializer):
     """ Сериализатор для представления ShopView """
+
     class Meta:
         model = Shop
         fields = ('id', 'title', 'address', 'categories')
@@ -106,12 +108,14 @@ class ShopSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     """ Сериализатор для представления CategoryView"""
+
     class Meta:
         model = Category
         fields = ('id', 'name', 'shops')
 
 class ParameterSerializer(serializers.ModelSerializer):
     """ Сериализатор для представления ParameterView"""
+
     class Meta:
         model = Parameter
         fields = ('product','price', 'description', 'quantity')
@@ -119,8 +123,8 @@ class ParameterSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     """ Сериализатор для представления ProductView """
-    parameters = ParameterSerializer(many=True, read_only=True,)
 
+    parameters = ParameterSerializer(many=True, read_only=True,)
     class Meta:
         model = Product
         fields = ('id', 'name', 'сategory', 'shop', 'parameters', 'product_infos')
@@ -128,6 +132,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     """ Serializer для представления CartViewSet """
+
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'product', 'quantity']  
+        fields = ['id', 'user', 'product', 'quantity'] 
+        read_only_fields = ['user'] 
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    """ Serializer для представления OrderViewSet """
+    
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'status', 'created_timestamp', 'order_items']        

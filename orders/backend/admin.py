@@ -51,13 +51,15 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'product', 'quantity', 'created_timestamp']
 
 
+
+class OrderItemInLine(admin.TabularInline):
+    """ Админка модели позиции в заказе """
+    model = OrderItem
+    list_display = ['id', 'order', 'product', 'quantity', 'created_timestamp']
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     """ Админка модели Заказ """
     list_display = ['id', 'user', 'status', 'created_timestamp']
-
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    """ Админка модели позиции в заказе """
-    list_display = ['id', 'order', 'product', 'quantity', 'created_timestamp']
+    inlines = (OrderItemInLine,)
