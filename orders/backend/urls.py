@@ -1,7 +1,7 @@
 from django.urls import path
 # from rest_framework.routers import DefaultRouter
 from backend.views import RegistrationAPIView, LoginAPIView, UserRetrieveUpdateAPIView, ShopView, \
-    CategoryView, ProductView, OrdeViewSet
+    CategoryView, ProductView, OrdeViewSet, ImportOfGoodsUpdate
 
 
 from rest_framework.routers import DefaultRouter
@@ -21,5 +21,6 @@ urlpatterns = [
     path('shops/', ShopView.as_view()),
     path('categories/', CategoryView.as_view()),
     path('product/', ProductView.as_view()),
+    path('update/', ImportOfGoodsUpdate.as_view()),
  
 ] + router.urls

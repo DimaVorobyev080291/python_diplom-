@@ -2,6 +2,7 @@ from rest_framework import status
 from django.forms import ValidationError
 from django.db import transaction
 from django.http import JsonResponse
+import yaml
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -190,4 +191,39 @@ class OrdeViewSet(ModelViewSet):
         if self.action in ['create']:
             return [IsAuthenticated()]
         elif self.action in ['list', 'destroy', 'update', 'partial_update', 'retrieve']:
-            return [IsAuthenticated(), IsOwnerOrReadOnly()]       
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]  
+
+
+class ImportOfGoodsUpdate(APIView):
+    """ Класс для обновления прайс листа  """
+
+    def post(self, request, *args, **kwargs):
+
+        try:
+            with open('data/data.yaml') as file:
+                data = yaml.safe_load(file)
+
+                shop = Shop.objects.create(title=data['shop'], address=data['address'], id=data['id'])
+                shop.save()
+                latest_shop = Shop.objects.latest('id')
+                for category in data['categories']:
+                    category_object = Category.objects.create(name=category['name'], id=category['id'])
+                    category_object.save()
+                    category_object.shops.add(latest_shop.id)
+
+            with transaction.atomic():
+                for products in data['product']:
+                    product = Product.objects.create(name=products['name'],
+                                                     сategory=Category.objects.get(id=products['сategory']),
+                                                     shop=Shop.objects.get(id=products['shop']))
+
+                    latest_product = Product.objects.latest('id')
+                    parameters = products['parameters']
+                    parameter = Parameter.objects.create(product=Product.objects.get(id=latest_product.id),
+                                                         price=parameters['price'],
+                                                         description=parameters['description'],
+                                                         quantity=parameters['quantity'])
+            
+            return JsonResponse({'Status': True , 'message': 'The download was successful'})
+        except:
+            return JsonResponse({'Status': False, 'Errors': 'The download was not completed !!!'})     

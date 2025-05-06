@@ -1,0 +1,126 @@
+shop: Связной
+id: 5
+address: город Мурманск улица Победы дом 16
+categories:
+   - id: 31
+     name: Смартфоны
+   - id: 41
+     name: Аксессуары
+   - id: 51
+     name: Flash-накопители
+   - id: 61
+     name: Телевизоры
+
+product:
+  - сategory: 31
+    name: Смартфон Apple iPhone XS Max 512GB (золотистый)
+    shop: 5
+    parameters:
+      price: 110000
+      description: Диагональ (дюйм) - 6.5, Разрешение (пикс) - 2688x1242, Встроенная память (Гб) - 512
+      quantity: 14
+      
+  - сategory: 31
+    name: Смартфон Apple iPhone XR 256GB (красный)
+    shop: 5
+    parameters:
+      price: 65000
+      description: Диагональ (дюйм) - 6.1, Разрешение (пикс) - 1792x828, Встроенная память (Гб)" - 256
+      quantity: 9
+      
+  - сategory: 31
+    name: Смартфон Apple iPhone XR 256GB (черный)
+    shop: 5
+    parameters:
+      price: 65000
+      description: Диагональ (дюйм) - 6.1, Разрешение (пикс) - 1792x828, Встроенная память (Гб)" - 256
+      quantity: 5
+
+  - сategory: 31
+    name: Смартфон Apple iPhone XR 128GB (синий)
+    shop: 5
+    parameters:
+      price: 60000
+      description: Диагональ (дюйм) - 6.1, Разрешение (пикс) - 1792x828, Встроенная память (Гб) - 256
+      quantity: 7
+    
+  - сategory: 31
+    name: Smartphone Samsung Galaxy S20 128GB (black)
+    shop: 5
+    parameters:
+      price: 80000
+      description: Screen Size (inches) - 6.2, Resolution (pixels) - 3200x1440, Internal Memory (GB) - 128
+      quantity: 5
+
+  - сategory: 31
+    name: Smartphone Samsung Galaxy Note20 256GB (mystic bronze)
+    shop : 5
+    parameters:
+      price: 95000
+      description: Screen Size (inches) - 6.7, Resolution (pixels) - 2400x1080, Internal Memory (GB) - 256
+      quantity: 3
+
+  - сategory: 51
+    name: USB Flash Drive SanDisk Ultra Flair 64GB (silver)
+    shop: 5
+    parameters:
+      price: 1500
+      description: Capacity (GB) - 64, Color - silver
+      quantity: 10
+
+  - сategory: 51
+    name: USB Flash Drive Kingston DataTraveler 32GB (red)
+    shop: 5
+    parameters:
+      price: 1000
+      description: Capacity (GB) - 32, Color - red
+      quantity: 8
+  
+  - сategory: 31
+    name: Smartphone Xiaomi Mi 10T Pro 256GB (cosmic black)
+    shop: 5
+    parameters:
+      price: 70000
+      description: Screen Size (inches) - 6.67, Resolution (pixels) - 2400x1080, Internal Memory (GB) - 256
+      quantity: 6
+
+  - сategory: 61
+    name: Samsung QLED Q90R 65" 4K UHD Smart TV
+    shop: 5
+    parameters:
+      price: 2500
+      description: Screen Size (inches) - 65, Resolution (pixels) - 3840x2160, Smart TV - true
+      quantity: 4
+      
+  - сategory: 61
+    name: LG OLED CX 55" 4K UHD Smart TV
+    shop: 5
+    parameters:
+      price: 1800
+      description: Screen Size (inches) - 55, Resolution (pixels) - 3840x2160, Smart TV - true
+      quantity: 7
+    
+  - сategory: 61
+    name: Sony Bravia X900H 75" 4K UHD Smart TV
+    shop: 5
+    parameters:
+      price: 3000
+      description: Screen Size (inches) - 75, Resolution (pixels) - 3840x2160, Smart TV - true
+      quantity: 3
+      
+  - сategory: 61
+    name: TCL 6-Series 55" 4K UHD Smart TV
+    shop: 5
+    parameters:
+      price: 700
+      description: Screen Size (inches) - 55, Resolution (pixels) - 3840x2160, Smart TV - true
+      quantity: 10
+      
+  - сategory: 61
+    name: Vizio P-Series Quantum 65" 4K UHD Smart TV
+    shop: 5
+    parameters:
+      price: 1200
+      description: Screen Size (inches) - 65, Resolution (pixels) - 3840x2160, Smart TV - true
+      quantity: 5
+      
