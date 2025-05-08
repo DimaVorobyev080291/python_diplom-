@@ -1,4 +1,5 @@
 # примеры API-запросов
+# в поле Authorization подставить JWT токен полученый при регистрации
 
 @baseUrl = http://localhost:8000/api
 
@@ -31,13 +32,13 @@ Content-Type: application/json
 # получение пользователя
 GET {{baseUrl}}/users/
 Content-Type: application/json
-Authorization:Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzUyNjc5Mzc3fQ.1NNW2-1hludPmHDOJmc8I020tQ69Pj_gQ9oVKKV_EqA
+Authorization:Token 
 
 ###
 # попытка поменять пользователя
 PATCH {{baseUrl}}/users/
 Content-Type: application/json
-Authorization:Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZXhwIjoxNzU1MjQ3MTI2fQ.6YfauPdoRLeiat1P9BuK5d4k6fPfRpFug4pEJqxNxTE
+Authorization:Token 
 
 
 {
@@ -69,13 +70,13 @@ Content-Type: application/json
 # получения корзины 
 GET  {{baseUrl}}/cart/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzUyNjg2NDIyfQ.j9pE5LXcH4Kb7aWF5mTDMnzIq8zrYbjjZyJ8fnCS09M
+Authorization: Token 
 
 ###
 # добавление товара в корзину 
 POST   {{baseUrl}}/cart/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzUyNjg2NDIyfQ.j9pE5LXcH4Kb7aWF5mTDMnzIq8zrYbjjZyJ8fnCS09M
+Authorization: Token 
 
 {
     "product": 1,
@@ -86,7 +87,7 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNz
 # изменения товара в корзину 
 PUT    {{baseUrl}}/cart/47/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzUyNjg2NDIyfQ.j9pE5LXcH4Kb7aWF5mTDMnzIq8zrYbjjZyJ8fnCS09M
+Authorization: Token 
 
 {
     "product": 1,
@@ -97,20 +98,20 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNz
 # удаление товара из корзины 
 DELETE   {{baseUrl}}/cart/47/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZXhwIjoxNzUyNjg4ODY3fQ.5CTiuJ8WZKKVBUuwqT-h3_nj7nlcPAP2HARMhHgd528
+Authorization: Token 
 
 ###
 
 # Оформление заказа товара в корзине
 POST  {{baseUrl}}/order/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZXhwIjoxNzUyNjg4ODY3fQ.5CTiuJ8WZKKVBUuwqT-h3_nj7nlcPAP2HARMhHgd528
+Authorization: Token 
 
 ###
 # Получение моих заказов
 GET   {{baseUrl}}/order/
 Content-Type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzUyNjg2NDIyfQ.j9pE5LXcH4Kb7aWF5mTDMnzIq8zrYbjjZyJ8fnCS09M
+Authorization: Token 
 
 ###
 # обновления прайс листа
