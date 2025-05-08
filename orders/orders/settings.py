@@ -127,16 +127,16 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'backend.User'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# # EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# EMAIL_HOST = 'smtp.mail.ru'
-# EMAIL_PORT = '465'
-# EMAIL_HOST_USER = 'dima02081991@mail.ru'
-# EMAIL_HOST_PASSWORD = '9cbYJhzXn1E3sjygKK1d'
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'dima02081991@mail.ru'
+EMAIL_HOST_PASSWORD = '6btkpAcZ1w91DCPh53yq'
 # EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-# SERVER_EMAIL = EMAIL_HOST_USER
+# EMAIL_USE_SSL = True
+SERVER_EMAIL = EMAIL_HOST_USER
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
